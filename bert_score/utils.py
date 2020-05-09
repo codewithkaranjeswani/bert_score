@@ -106,19 +106,14 @@ model2layers = {
 
 def sent_encode(tokenizer, sent):
     "Encoding as sentence based on the tokenizer"
-    if (sent.strip() == ""):
-        # print("sent is empty")
-        snt = " "
-    else:
-        snt = sent.strip()
-    if isinstance(tokenizer, GPT2Tokenizer):
+    sent = sent.strip()
+    if sent == "":
+        return tokenizer.build_inputs_with_special_tokens([])
+    elif isinstance(tokenizer, GPT2Tokenizer):
         # for RoBERTa and GPT-2
-        return tokenizer.encode(snt, add_special_tokens=True,
-                                add_prefix_space=True,
-                                max_length=tokenizer.max_len)
+        return tokenizer.encode(sent, add_special_tokens=True, add_prefix_space=True, max_length=tokenizer.max_len)
     else:
-        return tokenizer.encode(snt, add_special_tokens=True,
-                                max_length=tokenizer.max_len)
+        return tokenizer.encode(sent, add_special_tokens=True, max_length=tokenizer.max_len)
 
 def get_model(model_type, num_layers, all_layers=None):
     if model_type.startswith("scibert"):
